@@ -483,7 +483,7 @@ export class DownloadDialogue extends BaseDownloadDialogue {
 
     getCanvasHighResImageUri(canvas: Manifesto.ICanvas): string {
         const size: Size | null = this.getCanvasComputedDimensions(canvas);
-        
+
         if (size) {
             const width: number = size.width;
             let uri: string = canvas.getCanonicalImageUri(width);
@@ -494,7 +494,7 @@ export class DownloadDialogue extends BaseDownloadDialogue {
                 uri_parts[uri_parts.length - 2] = String(rotation);
                 uri = uri_parts.join('/');
             }
-            
+
             return uri;
         } else if (canvas.externalResource && !canvas.externalResource.hasServiceDescriptor()) {
             // if there is no image service, return the dataUri.
@@ -567,6 +567,25 @@ export class DownloadDialogue extends BaseDownloadDialogue {
         }
 
         const canvas: Manifesto.ICanvas = this.extension.helper.getCurrentCanvas();
+
+        if (this.options.degradedSizeThreshold) {
+            const size = this.getCanvasDimensions(canvas);
+
+            let uri: string = unescape(canvas.externalResource.data['@id']);
+            if (uri.endsWith('/info.json')) {
+                uri = uri.substr(0, uri.lastIndexOf('/'));
+            }
+
+            let dataUri: string | null = canvas.externalResource.dataUri;
+            if (dataUri && dataUri.endsWith('/info.json')) {
+                dataUri = dataUri.substr(0, dataUri.lastIndexOf('/'));
+            }
+
+            // Only allow degraded images if the size is above the configured threshold
+            if (uri !== dataUri && size && Math.max(size.width, size.height) <= this.options.degradedSizeThreshold) {
+                return false;
+            }
+        }
 
         // if the external resource doesn't have a service descriptor or is level 0
         // only allow wholeImageHighRes

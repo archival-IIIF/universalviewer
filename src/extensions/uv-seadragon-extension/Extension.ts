@@ -857,12 +857,12 @@ export class Extension extends BaseExtension implements ISeadragonExtension {
     getInfoUri(canvas: Manifesto.ICanvas): string {
         let infoUri: string | null = null;
 
-        const images: Manifesto.IAnnotation[] = canvas.getImages();
+        const content: Manifesto.IAnnotation[] = canvas.getContent();
 
-        if (images && images.length) {
-            let firstImage: Manifesto.IAnnotation = images[0];
-            let resource: Manifesto.IResource = firstImage.getResource();
-            let services: Manifesto.IService[] = resource.getServices();
+        if (content && content.length) {
+            let firstContent: Manifesto.IAnnotation = content[0];
+            let body: Manifesto.IAnnotationBody = firstContent.getBody()[0];
+            let services: Manifesto.IService[] = body.getServices();
 
             for (let i = 0; i < services.length; i++) {
                 let service: Manifesto.IService = services[i];
