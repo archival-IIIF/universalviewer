@@ -50,8 +50,8 @@ export class BaseExtension implements IExtension {
 
         const that = this;
 
-        Auth09.publish = this.component.publish;
-        Auth1.publish = this.component.publish;
+        Auth09.publish = this.component.publish.bind(this.component);
+        Auth1.publish = this.component.publish.bind(this.component);
 
         this.$element = $(this.component.options.target);
         this.$element.data("component", this.component);

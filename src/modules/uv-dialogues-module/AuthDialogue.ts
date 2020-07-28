@@ -27,10 +27,10 @@ export class AuthDialogue extends Dialogue {
         this.closeCommand = BaseEvents.HIDE_AUTH_DIALOGUE;
 
         this.component.subscribe(this.openCommand, (e: any) => {
-            this.closeCallback = e.closeCallback;
-            this.confirmCallback = e.confirmCallback;
-            this.cancelCallback = e.cancelCallback;
-            this.service = e.service;
+            this.closeCallback = e[0].closeCallback;
+            this.confirmCallback = e[0].confirmCallback;
+            this.cancelCallback = e[0].cancelCallback;
+            this.service = e[0].service;
             this.open();
         });
 

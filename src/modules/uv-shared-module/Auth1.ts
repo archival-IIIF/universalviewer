@@ -2,6 +2,7 @@ import {BaseEvents} from "./BaseEvents";
 import {UVUtils} from "../../Utils";
 import {InformationArgs} from "./InformationArgs";
 import {InformationType} from "./InformationType";
+import {Auth1Extended} from './Auth1Extended';
 
 export class Auth1 {
 
@@ -22,7 +23,7 @@ export class Auth1 {
                 return resource;
             });
 
-            manifesto.Utils.loadExternalResourcesAuth1(
+            Auth1Extended.loadExternalResourcesAuth1(
                 resourcesToLoad,
                 Auth1.openContentProviderInteraction,
                 Auth1.openTokenService,
