@@ -919,7 +919,11 @@ export class Extension extends BaseExtension implements ISeadragonExtension {
             return false;
         }
 
-        if (!this.helper.getSearchService()) {
+        // if (!this.helper.getSearchService()) {
+        //     return false;
+        // }
+
+        if (!this.helper.manifest.getService('http://iiif.io/api/search/1/search')) {
             return false;
         }
 
@@ -959,9 +963,11 @@ export class Extension extends BaseExtension implements ISeadragonExtension {
     }
 
     getAutoCompleteService(): Manifesto.IService | null {
-        const service: Manifesto.IService | null = this.helper.getSearchService();
+        // const service: Manifesto.IService | null = this.helper.getSearchService();
+        const service = this.helper.manifest.getService('http://iiif.io/api/search/1/search');
         if (!service) return null;
-        return service.getService(manifesto.ServiceProfile.autoComplete());
+        // return service.getService(manifesto.ServiceProfile.autoComplete());
+        return service.getService('http://iiif.io/api/search/1/autocomplete');
     }
 
     getAutoCompleteUri(): string | null {
@@ -971,7 +977,8 @@ export class Extension extends BaseExtension implements ISeadragonExtension {
     }
 
     getSearchServiceUri(): string | null {
-        const service: Manifesto.IService | null = this.helper.getSearchService();
+        //const service: Manifesto.IService | null = this.helper.getSearchService();
+        const service = this.helper.manifest.getService('http://iiif.io/api/search/1/search');
         if (!service) return null;
 
         let uri: string = service.id;
@@ -1037,7 +1044,8 @@ export class Extension extends BaseExtension implements ISeadragonExtension {
 
         for (let i = 0; i < annotations.resources.length; i++) {
             const resource: any = annotations.resources[i];
-            const canvasIndex: number | null = this.helper.getCanvasIndexById(resource.on.match(/(.*)#/)[1]);
+            const canvasId = resource.on.match(/(.*)#/) ? resource.on.match(/(.*)#/)[1] : resource.on;
+            const canvasIndex: number | null = this.helper.getCanvasIndexById(canvasId);
             const annotationGroup: AnnotationGroup = new AnnotationGroup(resource, <number>canvasIndex);
             const match: AnnotationGroup = parsed.en().where(x => x.canvasIndex === annotationGroup.canvasIndex).first();
 
