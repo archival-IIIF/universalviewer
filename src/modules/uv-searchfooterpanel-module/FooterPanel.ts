@@ -488,10 +488,10 @@ export class FooterPanel extends BaseFooterPanel {
             let label: string | null = Manifesto.LanguageMap.getValue(canvas.getLabel());
 
             if (!label) {
-                label = this.extension.helper.manifest.options.defaultLabel;
+                label = that.extension.helper.manifest.options.defaultLabel;
             }
 
-            title = Utils.Strings.format(title, that.content.pageCaps, label);
+            title = Utils.Strings.format(title, that.content.pageCaps, label as string);
         } else {
             title = Utils.Strings.format(title, that.content.imageCaps, String(canvasIndex + 1));
         }
