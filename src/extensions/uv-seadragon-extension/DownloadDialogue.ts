@@ -81,7 +81,7 @@ export class DownloadDialogue extends BaseDownloadDialogue {
         this.$explanatoryTextTemplate = $('<span class="explanatory"></span>');
 
         const that = this;
-        
+
         // what happens on download is specific to the extension (except for renderings which need to be moved to the base download dialogue)
         // todo: we need to make everything a list of radio button options in the base class, then we can unify everything into a single render method
         this.$downloadButton.on('click', (e) => {
@@ -106,7 +106,7 @@ export class DownloadDialogue extends BaseDownloadDialogue {
 
                 if (type = DownloadOption.ENTIRE_DOCUMENT_AS_PDF) {
                     //var printService: Manifesto.IService = this.extension.helper.manifest.getService(manifesto.ServiceProfile.printExtensions());
-                    
+
                     // if downloading a pdf - if there's a print service, generate an event instead of opening a new window.
                     // if (printService && this.extension.isOnHomeDomain()){
                     //     this.component.publish(Events.PRINT);
@@ -194,13 +194,13 @@ export class DownloadDialogue extends BaseDownloadDialogue {
             }
 
             // explanatory text
-            if (Utils.Bools.getBool(this.options.optionsExplanatoryTextEnabled, false)) {                
+            if (Utils.Bools.getBool(this.options.optionsExplanatoryTextEnabled, false)) {
                 const text: string = this.content.currentViewAsJpgExplanation;
                 if (text) {
                     const $span = this.$explanatoryTextTemplate.clone();
                     $span.text(text);
                     $label.append($span);
-                }                
+                }
             }
         } else {
             this.$currentViewAsJpgButton.hide();
@@ -239,18 +239,18 @@ export class DownloadDialogue extends BaseDownloadDialogue {
 
                 this.$wholeImageHighResButton.data('width', size.width);
                 this.$wholeImageHighResButton.data('height', size.height);
-                
+
                 this.$wholeImageHighResButton.show();
             }
 
             // explanatory text
-            if (Utils.Bools.getBool(this.options.optionsExplanatoryTextEnabled, false)) {                
+            if (Utils.Bools.getBool(this.options.optionsExplanatoryTextEnabled, false)) {
                 const text: string = this.content.wholeImageHighResExplanation;
                 if (text) {
                     const $span: JQuery = this.$explanatoryTextTemplate.clone();
                     $span.text(text);
                     $label.append($span);
-                }                
+                }
             }
         } else {
             this.$wholeImageHighResButton.hide();
@@ -266,7 +266,7 @@ export class DownloadDialogue extends BaseDownloadDialogue {
             } else {
                 mime = '?';
             }
-            
+
             const label: string = Utils.Strings.format(this.content.wholeImagesHighRes, mime);
             $label.text(label);
             $input.prop('title', label);
@@ -274,13 +274,13 @@ export class DownloadDialogue extends BaseDownloadDialogue {
             this.$wholeImagesHighResButton.show();
 
             // explanatory text
-            if (Utils.Bools.getBool(this.options.optionsExplanatoryTextEnabled, false)) {                
+            if (Utils.Bools.getBool(this.options.optionsExplanatoryTextEnabled, false)) {
                 const text: string = this.content.wholeImagesHighResExplanation;
                 if (text) {
                     const $span: JQuery = this.$explanatoryTextTemplate.clone();
                     $span.text(text);
                     $label.append($span);
-                }                
+                }
             }
         } else {
             this.$wholeImagesHighResButton.hide();
@@ -300,13 +300,13 @@ export class DownloadDialogue extends BaseDownloadDialogue {
             this.$wholeImageLowResAsJpgButton.show();
 
             // explanatory text
-            if (Utils.Bools.getBool(this.options.optionsExplanatoryTextEnabled, false)) {                
+            if (Utils.Bools.getBool(this.options.optionsExplanatoryTextEnabled, false)) {
                 const text: string = this.content.wholeImageLowResAsJpgExplanation;
                 if (text) {
                     const $span = this.$explanatoryTextTemplate.clone();
                     $span.text(text);
                     $label.append($span);
-                }                
+                }
             }
         } else {
             this.$wholeImageLowResAsJpgButton.hide();
@@ -320,13 +320,13 @@ export class DownloadDialogue extends BaseDownloadDialogue {
             this.$selectionButton.show();
 
             // explanatory text
-            if (Utils.Bools.getBool(this.options.optionsExplanatoryTextEnabled, false)) {                
+            if (Utils.Bools.getBool(this.options.optionsExplanatoryTextEnabled, false)) {
                 const text: string = this.content.selectionExplanation;
                 if (text) {
                     const $span = this.$explanatoryTextTemplate.clone();
                     $span.text(text);
                     $label.append($span);
-                }                
+                }
             }
         } else {
             this.$selectionButton.hide();
@@ -335,7 +335,7 @@ export class DownloadDialogue extends BaseDownloadDialogue {
         this.resetDynamicDownloadOptions();
 
         if (this.isDownloadOptionAvailable(DownloadOption.RANGE_RENDERINGS)) {
-            
+
             if (canvas.ranges && canvas.ranges.length) {
                 for (let i = 0; i < canvas.ranges.length; i++) {
                     const range: Manifesto.IRange = canvas.ranges[i];
@@ -360,11 +360,11 @@ export class DownloadDialogue extends BaseDownloadDialogue {
 
         if (this.isDownloadOptionAvailable(DownloadOption.MANIFEST_RENDERINGS)) {
             let renderingOptions: IRenderingOption[] = this.getDownloadOptionsForRenderings(this.extension.helper.getCurrentSequence(), this.content.entireDocument, DownloadOption.MANIFEST_RENDERINGS);
-            
+
             if (!renderingOptions.length) {
                 renderingOptions = this.getDownloadOptionsForRenderings(this.extension.helper.manifest, this.content.entireDocument, DownloadOption.MANIFEST_RENDERINGS);
             }
-            
+
             this.addDownloadOptionsForRenderings(renderingOptions);
         }
 
@@ -403,7 +403,7 @@ export class DownloadDialogue extends BaseDownloadDialogue {
 
             let bHeight: any = $(b).data('height');
             bHeight ? bHeight = parseInt(bHeight.toString()) : 0;
-            
+
             const aArea: number = aWidth * aHeight;
             const bArea: number = bWidth * bHeight;
 
@@ -415,7 +415,7 @@ export class DownloadDialogue extends BaseDownloadDialogue {
                 return 1;
             }
 
-            return 0; 
+            return 0;
         });
 
         $options.detach().appendTo(this.$imageOptions);
@@ -527,7 +527,7 @@ export class DownloadDialogue extends BaseDownloadDialogue {
                 return new Size(width, height);
             }
         }
-        
+
         return null;
     }
 
@@ -568,23 +568,11 @@ export class DownloadDialogue extends BaseDownloadDialogue {
 
         const canvas: Manifesto.ICanvas = this.extension.helper.getCurrentCanvas();
 
-        if (this.options.degradedSizeThreshold) {
-            const size = this.getCanvasDimensions(canvas);
-
-            let uri: string = unescape(canvas.externalResource.data['@id']);
-            if (uri.endsWith('/info.json')) {
-                uri = uri.substr(0, uri.lastIndexOf('/'));
-            }
-
-            let dataUri: string | null = canvas.externalResource.dataUri;
-            if (dataUri && dataUri.endsWith('/info.json')) {
-                dataUri = dataUri.substr(0, dataUri.lastIndexOf('/'));
-            }
-
-            // Only allow degraded images if the size is above the configured threshold
-            if (uri !== dataUri && size && Math.max(size.width, size.height) <= this.options.degradedSizeThreshold) {
-                return false;
-            }
+        // Only allow download of image if the size is above the configured threshold
+        const maxDimensions: Size | null = canvas.getMaxDimensions();
+        if (maxDimensions && this.options.downloadSizeThreshold
+            && (maxDimensions.width < this.options.downloadSizeThreshold)) {
+            return false;
         }
 
         // if the external resource doesn't have a service descriptor or is level 0
@@ -592,7 +580,7 @@ export class DownloadDialogue extends BaseDownloadDialogue {
         if (!canvas.externalResource.hasServiceDescriptor() || this._isLevel0(canvas.externalResource.data.profile)) {
             if (option === DownloadOption.WHOLE_IMAGE_HIGH_RES) {
                 // if in one-up mode, or in two-up mode with a single page being shown
-                if (!(<ISeadragonExtension>this.extension).isPagingSettingEnabled() || 
+                if (!(<ISeadragonExtension>this.extension).isPagingSettingEnabled() ||
                     (<ISeadragonExtension>this.extension).isPagingSettingEnabled() && this.extension.resources && this.extension.resources.length === 1) {
 
                     return true;
@@ -607,10 +595,10 @@ export class DownloadDialogue extends BaseDownloadDialogue {
             case DownloadOption.IMAGE_RENDERINGS:
             case DownloadOption.WHOLE_IMAGE_HIGH_RES:
                 // if in one-up mode, or in two-up mode with a single page being shown
-                if (!(<ISeadragonExtension>this.extension).isPagingSettingEnabled() || 
+                if (!(<ISeadragonExtension>this.extension).isPagingSettingEnabled() ||
                     (<ISeadragonExtension>this.extension).isPagingSettingEnabled() && this.extension.resources && this.extension.resources.length === 1) {
                     const maxDimensions: Size | null = canvas.getMaxDimensions();
-                    
+
                     if (maxDimensions) {
                         if (maxDimensions.width <= this.options.maxImageWidth) {
                             return true;
@@ -635,7 +623,7 @@ export class DownloadDialogue extends BaseDownloadDialogue {
                 return (!(<ISeadragonExtension>this.extension).isPagingSettingEnabled() && (size.width > this.options.confinedImageSize));
             case DownloadOption.SELECTION:
                 return this.options.selectionEnabled;
-            case DownloadOption.RANGE_RENDERINGS:                
+            case DownloadOption.RANGE_RENDERINGS:
                 if (canvas.ranges && canvas.ranges.length) {
                     const range: Manifesto.IRange = canvas.ranges[0];
                     return range.getRenderings().length > 0;
