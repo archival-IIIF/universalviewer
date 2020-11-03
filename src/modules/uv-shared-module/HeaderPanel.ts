@@ -27,8 +27,9 @@ export class HeaderPanel extends BaseView {
 
         super.create();
 
-        this.component.subscribe(BaseEvents.SHOW_INFORMATION, (args: InformationArgs) => {
-            this.showInformation(args);
+        this.component.subscribe(BaseEvents.SHOW_INFORMATION, (args: InformationArgs[]) => {
+            // TODO: Disable for now
+            // this.showInformation(args[0]);
         });
 
         this.component.subscribe(BaseEvents.HIDE_INFORMATION, () => {
