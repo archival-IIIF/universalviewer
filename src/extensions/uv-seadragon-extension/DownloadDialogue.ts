@@ -575,6 +575,13 @@ export class DownloadDialogue extends BaseDownloadDialogue {
             return false;
         }
 
+        // TODO: Disallow download for 'ARCH00293' and 'ARCH00393'
+        const id = this.extension.helper.manifest.id;
+        if (id.startsWith('https://access.iisg.amsterdam/iiif/presentation/ARCH00293')
+            || id.startsWith('https://access.iisg.amsterdam/iiif/presentation/ARCH00393')) {
+            return false;
+        }
+
         // if the external resource doesn't have a service descriptor or is level 0
         // only allow wholeImageHighRes
         if (!canvas.externalResource.hasServiceDescriptor() || this._isLevel0(canvas.externalResource.data.profile)) {
