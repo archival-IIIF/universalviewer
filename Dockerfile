@@ -14,13 +14,16 @@ WORKDIR /app
 # Install the application dependencies and build the application
 RUN npm install
 RUN grunt build --dist
-RUN mv /app/examples/uv/uv.html /app/examples/uv/index.html
+
+# Add IISH specific files
+RUN mv /app/iish/* /app/examples/uv
 
 # Create the actual image
 FROM nginx:stable-alpine
 
 # Copy the build
 COPY --from=builder /app/examples/uv /usr/share/nginx/html
+WORKDIR /usr/share/nginx/html
 
 # Expose the web server port
 EXPOSE 80

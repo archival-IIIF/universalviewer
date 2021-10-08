@@ -61,6 +61,7 @@ node_modules
 !jest.setup.js
 src/extensions/*/lib/*.js
 !src/extensions/*/lib/*.proxy.js
+!iish/universalviewer.js
 
 #################
 ## Build
