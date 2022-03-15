@@ -26,10 +26,8 @@ window.addEventListener('uvLoaded', function () {
     }, urlDataProvider);
 
     uv.on('multiSelectionMade', function (selectionMade) {
-        var parts = selectionMade.manifestUri.split('/');
-        var id = selectionMade.manifestUri.startsWith('https://hdl.handle.net')
-            ? parts[parts.length - 1].split('?')[0]
-            : parts[parts.length - 2];
+        var parts = selectionMade.canvases[0].split('/');
+        var id = parts[parts.length - 3];
 
         var qs = '';
         if (!selectionMade.allCanvases) {
