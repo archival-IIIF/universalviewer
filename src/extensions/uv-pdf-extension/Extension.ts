@@ -7,10 +7,12 @@ import {IPDFExtension} from "./IPDFExtension";
 import {MoreInfoRightPanel} from "../../modules/uv-moreinforightpanel-module/MoreInfoRightPanel";
 import {PDFCenterPanel} from "../../modules/uv-pdfcenterpanel-module/PDFCenterPanel";
 import {PDFHeaderPanel} from "../../modules/uv-pdfheaderpanel-module/PDFHeaderPanel";
-import {ResourcesLeftPanel} from "../../modules/uv-resourcesleftpanel-module/ResourcesLeftPanel";
+//import {ResourcesLeftPanel} from "../../modules/uv-resourcesleftpanel-module/ResourcesLeftPanel";
 import {SettingsDialogue} from "./SettingsDialogue";
 import {ShareDialogue} from "./ShareDialogue";
 import IThumb = Manifold.IThumb;
+import {ContentLeftPanel} from '../../modules/uv-contentleftpanel-module/ContentLeftPanel';
+import ITreeNode = Manifold.ITreeNode;
 
 export class Extension extends BaseExtension implements IPDFExtension {
 
@@ -23,7 +25,8 @@ export class Extension extends BaseExtension implements IPDFExtension {
     shareDialogue: ShareDialogue;
     footerPanel: FooterPanel;
     headerPanel: PDFHeaderPanel;
-    leftPanel: ResourcesLeftPanel;
+    //leftPanel: ResourcesLeftPanel;
+    leftPanel: ContentLeftPanel;
     rightPanel: MoreInfoRightPanel;
     settingsDialogue: SettingsDialogue;
 
@@ -39,6 +42,11 @@ export class Extension extends BaseExtension implements IPDFExtension {
 
         this.component.subscribe(BaseEvents.THUMB_SELECTED, (thumb: IThumb) => {
             this.component.publish(BaseEvents.CANVAS_INDEX_CHANGED, thumb.index);
+        });
+
+        this.component.subscribe(BaseEvents.TREE_NODE_SELECTED, (node: ITreeNode) => {
+            this.fire(BaseEvents.TREE_NODE_SELECTED, node.data.path);
+            this.treeNodeSelected(node);
         });
 
         this.component.subscribe(BaseEvents.LEFTPANEL_EXPAND_FULL_START, () => {
@@ -96,8 +104,14 @@ export class Extension extends BaseExtension implements IPDFExtension {
             this.shell.$headerPanel.hide();
         }
 
+        // if (this.isLeftPanelEnabled()) {
+        //     this.leftPanel = new ResourcesLeftPanel(this.shell.$leftPanel);
+        // }
+
         if (this.isLeftPanelEnabled()) {
-            this.leftPanel = new ResourcesLeftPanel(this.shell.$leftPanel);
+            this.leftPanel = new ContentLeftPanel(this.shell.$leftPanel);
+        } else {
+            this.shell.$leftPanel.hide();
         }
 
         this.centerPanel = new PDFCenterPanel(this.shell.$centerPanel);
@@ -162,5 +176,33 @@ export class Extension extends BaseExtension implements IPDFExtension {
         const iframeSrc: string = `${appUri}#?manifest=${this.helper.iiifResourceUri}&c=${this.helper.collectionIndex}&m=${this.helper.manifestIndex}&s=${this.helper.sequenceIndex}&cv=${this.helper.canvasIndex}`;
         const script: string = Utils.Strings.format(template, iframeSrc, width.toString(), height.toString());
         return script;
+    }
+
+    isLeftPanelEnabled(): boolean {
+        let isEnabled: boolean = super.isLeftPanelEnabled();
+        const tree: Manifesto.ITreeNode | null = this.helper.getTree();
+
+        if (tree && tree.nodes.length) {
+            isEnabled = true;
+        }
+
+        return isEnabled;
+    }
+
+    treeNodeSelected(node: ITreeNode): void {
+        const data: any = node.data;
+
+        if (!data.type) return;
+
+        switch (data.type) {
+            case manifesto.IIIFResourceType.manifest().toString():
+                this.viewManifest(data);
+                break;
+            case manifesto.IIIFResourceType.collection().toString():
+                // note: this won't get called as the tree component now has branchNodesSelectable = false
+                // useful to keep around for reference
+                this.viewCollection(data);
+                break;
+        }
     }
 }

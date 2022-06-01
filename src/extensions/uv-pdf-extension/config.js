@@ -9,6 +9,7 @@ module.exports = {
             expand: true,
             flatten: true,
             src: [
+                '@iiif/iiif-tree-component/dist/TreeComponent.js',
                 '@iiif/iiif-metadata-component/dist/MetadataComponent.js',
                 'pdfjs-dist/build/pdf.combined.js',
                 'pdfobject/pdfobject.js'

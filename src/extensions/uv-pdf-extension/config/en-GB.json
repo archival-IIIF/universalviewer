@@ -16,6 +16,37 @@
   },
   "modules":
   {
+    "contentLeftPanel": {
+      "options": {
+        "autoExpandTreeEnabled": true,
+        "autoExpandTreeIfFewerThan": 20,
+        "branchNodesExpandOnClick": false,
+        "branchNodesSelectable": true,
+        "defaultToTreeEnabled": false,
+        "defaultToTreeIfGreaterThan": 0,
+        "elideCount": 40,
+        "expandFullEnabled": true,
+        "galleryThumbChunkedResizingThreshold": 400,
+        "galleryThumbHeight": 320,
+        "galleryThumbLoadPadding": 3,
+        "galleryThumbWidth": 200,
+        "oneColThumbHeight": 320,
+        "oneColThumbWidth": 200,
+        "pageModeEnabled": true,
+        "panelAnimationDuration": 250,
+        "panelCollapsedWidth": 30,
+        "panelExpandedWidth": 255,
+        "panelOpen": true,
+        "tabOrder": "",
+        "thumbsEnabled": false,
+        "thumbsExtraHeight": 8,
+        "thumbsImageFadeInDuration": 300,
+        "thumbsLoadRange": 15,
+        "treeEnabled": true,
+        "twoColThumbHeight": 150,
+        "twoColThumbWidth": 90
+      }
+    },
     "shareDialogue":
     {
       "options":

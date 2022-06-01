@@ -108,7 +108,21 @@
       }
     },
     "contentLeftPanel": {
-
+      "content": {
+        "collapse": "Collapse Contents",
+        "collapseFull": "Collapse Gallery",
+        "date": "date",
+        "expand": "Expand Contents",
+        "expandFull": "Expand Gallery",
+        "index": "Index",
+        "manifestRanges": "Manifest Ranges",
+        "searchResult": "{0} search result",
+        "searchResults": "{0} search results",
+        "sortBy": "Sort By:",
+        "thumbnails": "Thumbnails",
+        "title": "Contents",
+        "volume": "volume"
+      }
     },
     "shareDialogue": {
       "content": {
