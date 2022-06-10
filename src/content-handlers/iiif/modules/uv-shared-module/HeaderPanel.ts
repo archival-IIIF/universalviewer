@@ -31,16 +31,18 @@ export class HeaderPanel<
 
     super.create();
 
-    this.extensionHost.subscribe(
-      IIIFEvents.SHOW_INFORMATION,
-      (args: InformationArgs) => {
-        this.showInformation(Array.isArray(args) ? args[0] : args);
-      }
-    );
+    // TODO: Disable for now
+    // this.extensionHost.subscribe(
+    //   IIIFEvents.SHOW_INFORMATION,
+    //   (args: InformationArgs) => {
+    //     this.showInformation(Array.isArray(args) ? args[0] : args);
+    //   }
+    // );
 
-    this.extensionHost.subscribe(IIIFEvents.HIDE_INFORMATION, () => {
-      this.hideInformation();
-    });
+    // TODO: Disable for now
+    // this.extensionHost.subscribe(IIIFEvents.HIDE_INFORMATION, () => {
+    //   this.hideInformation();
+    // });
 
     this.$options = $('<div class="options"></div>');
     this.$element.append(this.$options);

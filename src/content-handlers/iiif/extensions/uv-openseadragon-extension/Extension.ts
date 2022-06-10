@@ -643,13 +643,13 @@ export default class OpenSeadragonExtension extends BaseExtension<Config> {
       this.data.config!.modules.downloadDialogue
     );
 
-    const downloadService: Service | null = this.helper.manifest!.getService(
-      ServiceProfile.DOWNLOAD_EXTENSIONS
-    );
+    // const downloadService: Service | null = this.helper.manifest!.getService(
+    //   ServiceProfile.DOWNLOAD_EXTENSIONS
+    // );
 
-    const selectionEnabled =
-      config.options.selectionEnabled &&
-      downloadService?.__jsonld.selectionEnabled;
+    const selectionEnabled = config.options.selectionEnabled;
+      // config.options.selectionEnabled &&
+      // downloadService?.__jsonld.selectionEnabled;
 
     this.downloadDialogueRoot.render(
       createElement(DownloadDialogue, {
@@ -664,6 +664,7 @@ export default class OpenSeadragonExtension extends BaseExtension<Config> {
         locale: this.getLocale(),
         manifest: this.helper.manifest as Manifest,
         maxImageWidth: config.options.maxImageWidth,
+        downloadSizeThreshold: config.options.downloadSizeThreshold,
         mediaDownloadEnabled: this.helper.isUIEnabled("mediaDownload"),
         open: downloadDialogueOpen,
         paged: paged,

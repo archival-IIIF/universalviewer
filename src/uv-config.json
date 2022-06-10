@@ -1,0 +1,78 @@
+{
+  "options": {
+    "openTemplate": "{0}",
+    "termsOfUseEnabled": false,
+    "useArrowKeysToNavigate": true,
+    "multiSelectionMimeType": "application/pdf"
+  },
+  "localisation": {
+    "label": "English",
+    "locales": [
+      {
+        "name": "en-GB",
+        "label": "English"
+      }
+    ]
+  },
+  "content": {
+    "authorisationFailedMessage": "Unfortunately access to this record is restricted"
+  },
+  "modules": {
+    "contentLeftPanel": {
+      "options": {
+        "oneColThumbHeight": 150,
+        "oneColThumbWidth": 90,
+        "autoExpandTreeEnabled": true,
+        "defaultToTreeEnabled": true
+      }
+    },
+    "moreInfoRightPanel": {
+      "options": {
+        "copyToClipboardEnabled": true,
+        "panelOpen": true
+      }
+    },
+    "avCenterPanel": {
+      "options": {
+        "includeParentInTitleEnabled": true
+      },
+      "content": {
+        "delimiter": ""
+      }
+    },
+    "footerPanel": {
+      "options": {
+        "downloadEnabled": true
+      }
+    },
+    "downloadDialogue": {
+      "options": {
+        "downloadSizeThreshold": 1500,
+        "selectionEnabled": true
+      },
+      "content": {
+        "currentViewAsJpg": "JPEG of current view: {0} x {1} px",
+        "wholeImageHighRes": "JPEG of original size: {0} x {1} px",
+        "wholeImagesHighRes": "JPEGs of original size",
+        "wholeImageLowResAsJpg": "JPEG of size: {0} x {1} px",
+        "selection": "Select pages as PDF",
+        "noneAvailable": "No download options due to copyright restrictions"
+      }
+    },
+    "multiSelectDialogue": {
+      "options": {
+        "galleryThumbWidth": 400
+      },
+      "content": {
+        "select": "Download as PDF",
+        "selectAll": "Select all",
+        "title": "Select pages for PDF download"
+      }
+    },
+    "shareDialogue": {
+      "options": {
+        "shareManifestsEnabled": true
+      }
+    }
+  }
+}

@@ -33,6 +33,7 @@ const DownloadDialogue = ({
   locale,
   manifest,
   maxImageWidth,
+  downloadSizeThreshold,
   mediaDownloadEnabled,
   onClose,
   onDownloadCurrentView,
@@ -61,6 +62,7 @@ const DownloadDialogue = ({
   locale: string;
   manifest: Manifest;
   maxImageWidth: number;
+  downloadSizeThreshold: number;
   mediaDownloadEnabled: boolean;
   onClose: () => void;
   onDownloadCurrentView: (canvas: Canvas) => void;
@@ -190,6 +192,19 @@ const DownloadDialogue = ({
     }
 
     const canvas: Canvas = getSelectedCanvas();
+
+    // Only allow download of image if the size is above the configured threshold
+    const maxDimensions: Size | null = canvas.getMaxDimensions();
+    if (maxDimensions && downloadSizeThreshold && (maxDimensions.width < downloadSizeThreshold)) {
+      return false;
+    }
+
+    // TODO: Disallow download for 'ARCH00293' and 'ARCH00393' and 'COLL00146'
+    if (manifest?.id?.startsWith('https://access.iisg.amsterdam/iiif/presentation/ARCH00293')
+        || manifest?.id?.startsWith('https://access.iisg.amsterdam/iiif/presentation/ARCH00393')
+        || manifest?.id?.startsWith('https://access.iisg.amsterdam/iiif/presentation/COLL00146')) {
+      return false;
+    }
 
     // if the external resource doesn't have a service descriptor or is level 0
     // only allow wholeImageHighRes
@@ -527,110 +542,116 @@ const DownloadDialogue = ({
           <div role="heading" className="heading">
             {content.download}
           </div>
-          {/* <div className="nonAvailable">No download options are available</div> */}
-          {/* if in two-up, show two pages next to each other to choose from */}
-          <h2>{content.individualPages}</h2>
-          {canvases.length === 2 && (
-            <div className="pages">
-              <div
-                onClick={() => {
-                  setSelectedPage("left");
-                }}
-                className={cx("page left", {
-                  selected: selectedPage === "left",
-                })}
-              >
-                <span className="label">
-                  {canvases[0].getLabel().getValue()}
-                </span>
-              </div>
-              <div
-                onClick={() => {
-                  setSelectedPage("right");
-                }}
-                className={cx("page right", {
-                  selected: selectedPage === "right",
-                })}
-              >
-                <span className="label">
-                  {canvases[1].getLabel().getValue()}
-                </span>
-              </div>
-            </div>
-          )}
-          <ol className="options">
-            {isDownloadOptionAvailable(DownloadOption.CURRENT_VIEW) && (
-              <li className="option single">
-                <button
-                  onClick={() => {
-                    onDownloadCurrentView(getSelectedCanvas());
-                  }}
-                >
-                  {getCurrentViewLabel()}
-                </button>
-              </li>
-            )}
-            {isDownloadOptionAvailable(DownloadOption.WHOLE_IMAGE_HIGH_RES) && (
-              <li className="option single">
-                <button
-                  onClick={() => {
-                    window.open(getCanvasHighResImageUri(getSelectedCanvas()));
-                  }}
-                >
-                  {getWholeImageHighResLabel()}
-                </button>
-              </li>
-            )}
-            {isDownloadOptionAvailable(DownloadOption.WHOLE_IMAGE_LOW_RES) && (
-              <li className="option single">
-                <button
-                  onClick={() => {
-                    const imageUri: string | null = getConfinedImageUri(
-                      getSelectedCanvas()
-                    );
+          {isDownloadOptionAvailable(DownloadOption.ENTIRE_FILE_AS_ORIGINAL) && (
+             <>
+               {/* if in two-up, show two pages next to each other to choose from */}
+               <h2>{content.individualPages}</h2>
+               {canvases.length === 2 && (
+                   <div className="pages">
+                     <div
+                         onClick={() => {
+                           setSelectedPage("left");
+                         }}
+                         className={cx("page left", {
+                           selected: selectedPage === "left",
+                         })}
+                     >
+                  <span className="label">
+                    {canvases[0].getLabel().getValue()}
+                  </span>
+                     </div>
+                     <div
+                         onClick={() => {
+                           setSelectedPage("right");
+                         }}
+                         className={cx("page right", {
+                           selected: selectedPage === "right",
+                         })}
+                     >
+                  <span className="label">
+                    {canvases[1].getLabel().getValue()}
+                  </span>
+                     </div>
+                   </div>
+               )}
+               <ol className="options">
+                 {isDownloadOptionAvailable(DownloadOption.CURRENT_VIEW) && (
+                     <li className="option single">
+                       <button
+                           onClick={() => {
+                             onDownloadCurrentView(getSelectedCanvas());
+                           }}
+                       >
+                         {getCurrentViewLabel()}
+                       </button>
+                     </li>
+                 )}
+                 {isDownloadOptionAvailable(DownloadOption.WHOLE_IMAGE_HIGH_RES) && (
+                     <li className="option single">
+                       <button
+                           onClick={() => {
+                             window.open(getCanvasHighResImageUri(getSelectedCanvas()));
+                           }}
+                       >
+                         {getWholeImageHighResLabel()}
+                       </button>
+                     </li>
+                 )}
+                 {isDownloadOptionAvailable(DownloadOption.WHOLE_IMAGE_LOW_RES) && (
+                     <li className="option single">
+                       <button
+                           onClick={() => {
+                             const imageUri: string | null = getConfinedImageUri(
+                                 getSelectedCanvas()
+                             );
 
-                    if (imageUri) {
-                      window.open(imageUri);
-                    }
-                  }}
-                >
-                  {getWholeImageLowResLabel()}
-                </button>
-              </li>
-            )}
-            {isDownloadOptionAvailable(DownloadOption.RANGE_RENDERINGS) && (
-              <RangeRenderings />
-            )}
-            {isDownloadOptionAvailable(DownloadOption.IMAGE_RENDERINGS) && (
-              <ImageRenderings />
-            )}
-            {isDownloadOptionAvailable(DownloadOption.CANVAS_RENDERINGS) && (
-              <CanvasRenderings />
-            )}
-          </ol>
-          {(hasManifestRenderings() ||
-            isDownloadOptionAvailable(DownloadOption.SELECTION)) && (
-            <h2>{content.allPages}</h2>
+                             if (imageUri) {
+                               window.open(imageUri);
+                             }
+                           }}
+                       >
+                         {getWholeImageLowResLabel()}
+                       </button>
+                     </li>
+                 )}
+                 {isDownloadOptionAvailable(DownloadOption.RANGE_RENDERINGS) && (
+                     <RangeRenderings />
+                 )}
+                 {isDownloadOptionAvailable(DownloadOption.IMAGE_RENDERINGS) && (
+                     <ImageRenderings />
+                 )}
+                 {isDownloadOptionAvailable(DownloadOption.CANVAS_RENDERINGS) && (
+                     <CanvasRenderings />
+                 )}
+               </ol>
+               {(hasManifestRenderings() ||
+                   isDownloadOptionAvailable(DownloadOption.SELECTION)) && (
+                   <h2>{content.allPages}</h2>
+               )}
+               <ol className="options">
+                 {isDownloadOptionAvailable(DownloadOption.MANIFEST_RENDERINGS) && (
+                     <ManifestRenderings />
+                 )}
+                 {isDownloadOptionAvailable(DownloadOption.SELECTION) && (
+                     <li className="option single">
+                       <button
+                           onClick={() => {
+                             onDownloadSelection();
+                           }}
+                       >
+                         {content.selection}
+                       </button>
+                     </li>
+                 )}
+               </ol>
+               <div className="footer">
+                 <TermsOfUse />
+               </div>
+             </>
           )}
-          <ol className="options">
-            {isDownloadOptionAvailable(DownloadOption.MANIFEST_RENDERINGS) && (
-              <ManifestRenderings />
-            )}
-            {isDownloadOptionAvailable(DownloadOption.SELECTION) && (
-              <li className="option single">
-                <button
-                  onClick={() => {
-                    onDownloadSelection();
-                  }}
-                >
-                  {content.selection}
-                </button>
-              </li>
-            )}
-          </ol>
-          <div className="footer">
-            <TermsOfUse />
-          </div>
+          {!isDownloadOptionAvailable(DownloadOption.ENTIRE_FILE_AS_ORIGINAL) && (
+            <div className="nonAvailable">{content.noneAvailable}</div>
+          )}
         </div>
         <div className="buttons">
           <button

@@ -126,11 +126,31 @@ const config = [
             to: resolvePath("./dist"),
           },
           {
+            from: resolvePath("./src/uv-config.json"),
+            to: resolvePath("./dist"),
+          },
+          {
             from: resolvePath("./src/uv.css"),
             to: resolvePath("./dist"),
           },
           {
             from: resolvePath("./src/uv.html"),
+            to: resolvePath("./dist"),
+          },
+          {
+            from: resolvePath("./src/default.html"),
+            to: resolvePath("./dist"),
+          },
+          {
+            from: resolvePath("./src/default.css"),
+            to: resolvePath("./dist"),
+          },
+          {
+            from: resolvePath("./src/iish.css"),
+            to: resolvePath("./dist"),
+          },
+          {
+            from: resolvePath("./src/uv-config.json"),
             to: resolvePath("./dist"),
           },
         ],

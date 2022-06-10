@@ -367,15 +367,16 @@ export default class IIIFContentHandler extends BaseContentHandler<IIIFData>
         }
       }
 
-      // if using uv-av-extension and there is no structure, fall back to uv-mediaelement-extension
-      const hasRanges: boolean = helper.getRanges().length > 0;
-
-      if (extension!.type === Extension.AV && !hasRanges) {
-        extension = await that._getExtensionByType(
-          Extension.MEDIAELEMENT,
-          format
-        );
-      }
+      // TODO: No fallback to the mediaelement extension
+    // if using uv-av-extension and there is no structure, fall back to uv-mediaelement-extension
+    // const hasRanges: boolean = helper.getRanges().length > 0;
+    //
+      // if (extension!.type === Extension.AV && !hasRanges) {
+    //   extension = await that._getExtensionByType(
+    //     Extension.MEDIAELEMENT,
+    //     format
+    //   );
+    // }
 
       // if there still isn't a matching extension, use the default extension.
       if (!extension) {

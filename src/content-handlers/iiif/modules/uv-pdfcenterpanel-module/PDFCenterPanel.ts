@@ -34,7 +34,7 @@ export class PDFCenterPanel extends CenterPanel<
   private _pdfjsLib: any = null;
   private _prevButtonEnabled: boolean = false;
   private _renderTask: any;
-  private _scale: number = 0.7;
+  private _scale: number;
   private _viewport: any;
 
   constructor($element: JQuery) {
@@ -357,6 +357,7 @@ export class PDFCenterPanel extends CenterPanel<
       // });
 
       // scale viewport
+      this._scale = this._scale || (this.$content.height() - 10) / page.getViewport({ scale: 1.0 }).height;
       this._viewport = page.getViewport({ scale: this._scale });
       this._canvas.height = this._viewport.height;
       this._canvas.width = this._viewport.width;

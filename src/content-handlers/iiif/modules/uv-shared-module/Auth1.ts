@@ -3,13 +3,14 @@ import { IIIFEvents } from "../../IIIFEvents";
 import { sanitize } from "../../../../Utils";
 import { InformationArgs } from "./InformationArgs";
 import { InformationType } from "./InformationType";
+import { Auth1Extended } from "./Auth1Extended";
 import {
   IExternalResource,
   IAccessToken,
   IManifestoOptions,
   Service,
   StatusCode,
-  Utils,
+  //Utils,
 } from "manifesto.js";
 import { Storage, StorageType, StorageItem, Urls } from "@edsilv/utils";
 // import { Urls } from "@edsilv/utils";
@@ -36,7 +37,7 @@ export class Auth1 {
         return resource;
       });
 
-      Utils.loadExternalResourcesAuth1(
+      Auth1Extended.loadExternalResourcesAuth1(
         resourcesToLoad,
         Auth1.openContentProviderInteraction,
         Auth1.openTokenService,

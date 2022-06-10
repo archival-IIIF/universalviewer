@@ -11,7 +11,7 @@ import { MoreInfoRightPanel } from "../../modules/uv-moreinforightpanel-module/M
 import { SettingsDialogue } from "./SettingsDialogue";
 import { ShareDialogue } from "./ShareDialogue";
 import { IIIFResourceType } from "@iiif/vocabulary/dist-commonjs/";
-import { Bools, Strings } from "@edsilv/utils";
+import { Strings} from "@edsilv/utils";
 import { Thumb, TreeNode, Range } from "manifesto.js";
 import "./theme/theme.less";
 import defaultConfig from "./config/config.json";
@@ -142,7 +142,14 @@ export default class Extension extends BaseExtension<Config>
   }
 
   isLeftPanelEnabled(): boolean {
-    return Bools.getBool(this.data.config!.options.leftPanelEnabled, true);
+    let isEnabled: boolean = super.isLeftPanelEnabled();
+    const tree: TreeNode | null = this.helper.getTree();
+
+    if (tree && tree.nodes.length) {
+      isEnabled = true;
+    }
+
+    return isEnabled;
   }
 
   render(): void {

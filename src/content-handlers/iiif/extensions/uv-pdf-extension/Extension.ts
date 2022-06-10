@@ -7,12 +7,13 @@ import { IPDFExtension } from "./IPDFExtension";
 import { MoreInfoRightPanel } from "../../modules/uv-moreinforightpanel-module/MoreInfoRightPanel";
 import { PDFCenterPanel } from "../../modules/uv-pdfcenterpanel-module/PDFCenterPanel";
 import { PDFHeaderPanel } from "../../modules/uv-pdfheaderpanel-module/PDFHeaderPanel";
-import { ResourcesLeftPanel } from "../../modules/uv-resourcesleftpanel-module/ResourcesLeftPanel";
+//import { ResourcesLeftPanel } from "../../modules/uv-resourcesleftpanel-module/ResourcesLeftPanel";
+import { ContentLeftPanel } from "../../modules/uv-contentleftpanel-module/ContentLeftPanel";
 import { SettingsDialogue } from "./SettingsDialogue";
 import { ShareDialogue } from "./ShareDialogue";
-import { ExternalResourceType } from "@iiif/vocabulary/dist-commonjs/";
+import { IIIFResourceType, ExternalResourceType } from "@iiif/vocabulary/dist-commonjs/";
 import { Bools, Strings } from "@edsilv/utils";
-import { Canvas, LanguageMap, Thumb } from "manifesto.js";
+import {Canvas, LanguageMap, Thumb, TreeNode} from 'manifesto.js';
 import "./theme/theme.less";
 import defaultConfig from "./config/config.json";
 import { Events } from "../../../../Events";
@@ -29,7 +30,8 @@ export default class Extension extends BaseExtension<Config>
   shareDialogue: ShareDialogue;
   footerPanel: FooterPanel<Config["modules"]["footerPanel"]>;
   headerPanel: PDFHeaderPanel;
-  leftPanel: ResourcesLeftPanel;
+  //leftPanel: ResourcesLeftPanel;
+  leftPanel: ContentLeftPanel;
   rightPanel: MoreInfoRightPanel;
   settingsDialogue: SettingsDialogue;
   defaultConfig: Config = defaultConfig;
@@ -49,6 +51,11 @@ export default class Extension extends BaseExtension<Config>
 
     this.extensionHost.subscribe(IIIFEvents.THUMB_SELECTED, (thumb: Thumb) => {
       this.extensionHost.publish(IIIFEvents.CANVAS_INDEX_CHANGE, thumb.index);
+    });
+
+    this.extensionHost.subscribe(IIIFEvents.TREE_NODE_SELECTED, (node: TreeNode) => {
+      this.fire(IIIFEvents.TREE_NODE_SELECTED, node.data.path);
+      this.treeNodeSelected(node);
     });
 
     this.extensionHost.subscribe(IIIFEvents.LEFTPANEL_EXPAND_FULL_START, () => {
@@ -95,8 +102,14 @@ export default class Extension extends BaseExtension<Config>
       this.shell.$headerPanel.hide();
     }
 
+    // if (this.isLeftPanelEnabled()) {
+    //     this.leftPanel = new ResourcesLeftPanel(this.shell.$leftPanel);
+    // }
+
     if (this.isLeftPanelEnabled()) {
-      this.leftPanel = new ResourcesLeftPanel(this.shell.$leftPanel);
+      this.leftPanel = new ContentLeftPanel(this.shell.$leftPanel);
+    } else {
+      this.shell.$leftPanel.hide();
     }
 
     this.centerPanel = new PDFCenterPanel(this.shell.$centerPanel);
@@ -170,5 +183,33 @@ export default class Extension extends BaseExtension<Config>
       height.toString()
     );
     return script;
+  }
+
+  isLeftPanelEnabled(): boolean {
+    let isEnabled: boolean = super.isLeftPanelEnabled();
+    const tree: TreeNode | null = this.helper.getTree();
+
+    if (tree && tree.nodes.length) {
+      isEnabled = true;
+    }
+
+    return isEnabled;
+  }
+
+  treeNodeSelected(node: TreeNode): void {
+    const data: any = node.data;
+
+    if (!data.type) return;
+
+    switch (data.type) {
+      case IIIFResourceType.MANIFEST:
+        this.viewManifest(data);
+        break;
+      case IIIFResourceType.COLLECTION:
+        // note: this won't get called as the tree component now has branchNodesSelectable = false
+        // useful to keep around for reference
+        this.viewCollection(data);
+        break;
+    }
   }
 }
