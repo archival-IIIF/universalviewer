@@ -12,6 +12,7 @@ import {
 } from "manifesto.js";
 import { MetadataGroup, MetadataOptions } from "@iiif/manifold";
 import { AVComponent } from "@iiif/iiif-av-component/dist-esmodule";
+import { IAVExtensionData } from "../../extensions/uv-av-extension/IAVExtensionData";
 import { Bools } from "@edsilv/utils";
 import { Events } from "../../../../Events";
 import { Config } from "../../extensions/uv-av-extension/config/Config";
@@ -21,6 +22,7 @@ export class AVCenterPanel extends CenterPanel<
 > {
   $avcomponent: JQuery;
   avcomponent: any;
+  isFirstLoad: boolean = true;
   private _lastCanvasIndex: number | undefined;
   private _mediaReady: boolean = false;
   private _isThumbsViewOpen: boolean = false;
@@ -340,6 +342,14 @@ export class AVCenterPanel extends CenterPanel<
         // this.avcomponent.on('waveformready', () => {
         //     this.resize();
         // }, false);
+
+        if (this.isFirstLoad) {
+          const t: number | undefined = (this.extension.data as IAVExtensionData).t;
+          if (t) {
+            this._whenMediaReady(() => this.avcomponent.setCurrentTime(t));
+          }
+          this.isFirstLoad = false;
+        }
 
         this.extensionHost.publish(Events.EXTERNAL_RESOURCE_OPENED);
       }
