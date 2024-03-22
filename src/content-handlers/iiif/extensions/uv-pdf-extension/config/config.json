@@ -161,7 +161,7 @@
         "panelCollapsedWidth": 30,
         "panelExpandedWidth": 255,
         "panelOpen": true,
-        "thumbsEnabled": true,
+        "thumbsEnabled": false,
         "thumbsExtraHeight": 8,
         "thumbsImageFadeInDuration": 300,
         "thumbsLoadRange": 15,
@@ -171,6 +171,7 @@
         "expandFullEnabled": false
       },
       "content": {
+        "title": "$contents",
         "collapse": "$collapse",
         "collapseFull": "$collapseFull",
         "expand": "$expandContents",

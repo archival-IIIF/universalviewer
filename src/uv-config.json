@@ -18,7 +18,7 @@
     "authorisationFailedMessage": "Unfortunately access to this record is restricted"
   },
   "modules": {
-    "contentLeftPanel": {
+    "leftPanel": {
       "options": {
         "oneColThumbHeight": 150,
         "oneColThumbWidth": 90,
@@ -32,7 +32,7 @@
         "panelOpen": true
       }
     },
-    "avCenterPanel": {
+    "centerPanel": {
       "options": {
         "includeParentInTitleEnabled": true
       },
